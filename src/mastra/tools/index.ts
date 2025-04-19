@@ -1,102 +1,94 @@
-import { createTool } from '@mastra/core/tools';
+import { shellTool } from './shell-tool/shell-tool';
+import { sendEmailTool } from './mail-tool/mail-tool';
+import { weatherTool } from './weather-tool/weather-tool';
+import { webSearchTool } from './web-tool/web-tool';
+import { twitterTool } from './twitter-tool/twitter-tool';
+import {fileSystemTool,nextRouteTool,componentTool,dependencyTool,styleTool,codeRefactorTool} from './nextjs-tool/nextjs-tool';
+import {scrapeDocsTool} from './scrap-tool/scrap-tool';
+export {
+  shellTool,
+  sendEmailTool,
+  weatherTool,
+  webSearchTool,
+  twitterTool,
+  fileSystemTool,
+  nextRouteTool,
+  componentTool,
+  dependencyTool,
+  styleTool,
+  codeRefactorTool,
+  scrapeDocsTool
+}
+
+
 import { z } from 'zod';
-
-interface GeocodingResponse {
-  results: {
-    latitude: number;
-    longitude: number;
-    name: string;
-  }[];
-}
-interface WeatherResponse {
-  current: {
-    time: string;
-    temperature_2m: number;
-    apparent_temperature: number;
-    relative_humidity_2m: number;
-    wind_speed_10m: number;
-    wind_gusts_10m: number;
-    weather_code: number;
-  };
-}
-
-export const weatherTool = createTool({
-  id: 'get-weather',
-  description: 'Get current weather for a location',
+import axios from 'axios';
+import { createTool } from '@mastra/core/tools';
+export const urlAnalysisTool = createTool({
+  id: 'url-analysis',
+  description: 'Analyze a URL to check for potential phishing indicators.',
   inputSchema: z.object({
-    location: z.string().describe('City name'),
+    url: z.string().describe('URL to analyze'),
   }),
   outputSchema: z.object({
-    temperature: z.number(),
-    feelsLike: z.number(),
-    humidity: z.number(),
-    windSpeed: z.number(),
-    windGust: z.number(),
-    conditions: z.string(),
-    location: z.string(),
+    isHttps: z.boolean(),
+    domainReputation: z.string(), // good, suspicious, or malicious
+    potentialPhishing: z.boolean(),
   }),
   execute: async ({ context }) => {
-    return await getWeather(context.location);
+    const { url } = context;
+    
+    // Basic checks
+    const isHttps = url.startsWith('https://');
+    
+    // Dummy domain reputation check (replace with actual external service or database)
+    const domain = new URL(url).hostname;
+    const domainReputation = domain.includes('phishing') ? 'malicious' : 'good';
+    
+    // Placeholder logic to identify phishing patterns (e.g., suspicious domain)
+    const potentialPhishing = domain.includes('phishing') || domain.includes('secure-login');
+    
+    return {
+      isHttps,
+      domainReputation,
+      potentialPhishing,
+    };
   },
 });
 
-const getWeather = async (location: string) => {
-  const geocodingUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1`;
-  const geocodingResponse = await fetch(geocodingUrl);
-  const geocodingData = (await geocodingResponse.json()) as GeocodingResponse;
 
-  if (!geocodingData.results?.[0]) {
-    throw new Error(`Location '${location}' not found`);
-  }
 
-  const { latitude, longitude, name } = geocodingData.results[0];
+export const patternDetectionTool = createTool({
+  id: 'pattern-detection',
+  description: 'Detect suspicious patterns in the URL that may indicate phishing.',
+  inputSchema: z.object({
+    url: z.string().describe('URL to detect patterns in'),
+  }),
+  outputSchema: z.object({
+    containsSuspiciousChars: z.boolean(),
+    domainSimilarity: z.boolean(),
+    phishingDetected: z.boolean(),
+  }),
+  execute: async ({ context }) => {
+    const { url } = context;
+    
+    // Check for suspicious characters in the URL
+    const suspiciousChars = ['@', '%20', '?', '#'];
+    const containsSuspiciousChars = suspiciousChars.some((char) => url.includes(char));
+    
+    // Check for domain similarity (simple example with common phishing tricks)
+    const suspiciousDomains = ['paypa1.com', 'g00gle.com', 'facebo0k.com']; // Replace with a larger list or API
+    const domainSimilarity = suspiciousDomains.some((domain) => url.includes(domain));
+    
+    // If suspicious characters or domain similarities found, flag it
+    const phishingDetected = containsSuspiciousChars || domainSimilarity;
+    
+    return {
+      containsSuspiciousChars,
+      domainSimilarity,
+      phishingDetected,
+    };
+  },
+});
 
-  const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_gusts_10m,weather_code`;
 
-  const response = await fetch(weatherUrl);
-  const data = (await response.json()) as WeatherResponse;
-
-  return {
-    temperature: data.current.temperature_2m,
-    feelsLike: data.current.apparent_temperature,
-    humidity: data.current.relative_humidity_2m,
-    windSpeed: data.current.wind_speed_10m,
-    windGust: data.current.wind_gusts_10m,
-    conditions: getWeatherCondition(data.current.weather_code),
-    location: name,
-  };
-};
-
-function getWeatherCondition(code: number): string {
-  const conditions: Record<number, string> = {
-    0: 'Clear sky',
-    1: 'Mainly clear',
-    2: 'Partly cloudy',
-    3: 'Overcast',
-    45: 'Foggy',
-    48: 'Depositing rime fog',
-    51: 'Light drizzle',
-    53: 'Moderate drizzle',
-    55: 'Dense drizzle',
-    56: 'Light freezing drizzle',
-    57: 'Dense freezing drizzle',
-    61: 'Slight rain',
-    63: 'Moderate rain',
-    65: 'Heavy rain',
-    66: 'Light freezing rain',
-    67: 'Heavy freezing rain',
-    71: 'Slight snow fall',
-    73: 'Moderate snow fall',
-    75: 'Heavy snow fall',
-    77: 'Snow grains',
-    80: 'Slight rain showers',
-    81: 'Moderate rain showers',
-    82: 'Violent rain showers',
-    85: 'Slight snow showers',
-    86: 'Heavy snow showers',
-    95: 'Thunderstorm',
-    96: 'Thunderstorm with slight hail',
-    99: 'Thunderstorm with heavy hail',
-  };
-  return conditions[code] || 'Unknown';
-}
