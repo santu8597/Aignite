@@ -23,8 +23,8 @@ export default function Home() {
             <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors">Testimonials</a>
           </nav>
           <div className="flex items-center gap-4">
-            <button className="cyber-button">Login</button>
-            <button className="cyber-button bg-gradient-to-r from-secondary-dark to-secondary">Sign Up</button>
+            {/* <button className="cyber-button">Login</button>
+            <button className="cyber-button bg-gradient-to-r from-secondary-dark to-secondary">Sign Up</button> */}
           </div>
         </div>
       </header>
@@ -44,9 +44,9 @@ export default function Home() {
                 <Link href="/chat" className="cyber-button text-lg py-3 px-6">
                   Scan Now
                 </Link>
-                <button className="cyber-button bg-gradient-to-r from-secondary-dark to-secondary text-lg py-3 px-6">
+                <Link href="#features" className="cyber-button bg-gradient-to-r from-secondary-dark to-secondary text-lg py-3 px-6">
                   Learn More
-                </button>
+                </Link>
               </div>
             </div>
             <div className="relative">
@@ -91,7 +91,7 @@ export default function Home() {
                       height={80}
                       className="mb-2"
                     />
-                    <p className="text-center text-sm">Website Scan</p>
+                    <p className="text-center text-sm">Website Safe Scan</p>
                   </div>
                   <div className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
@@ -401,23 +401,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="mt-16 flex flex-wrap justify-center gap-8">
-            <div className="w-32 h-16 bg-card-border rounded flex items-center justify-center">
-              <span className="text-foreground/50 font-bold">LOGO 1</span>
-            </div>
-            <div className="w-32 h-16 bg-card-border rounded flex items-center justify-center">
-              <span className="text-foreground/50 font-bold">LOGO 2</span>
-            </div>
-            <div className="w-32 h-16 bg-card-border rounded flex items-center justify-center">
-              <span className="text-foreground/50 font-bold">LOGO 3</span>
-            </div>
-            <div className="w-32 h-16 bg-card-border rounded flex items-center justify-center">
-              <span className="text-foreground/50 font-bold">LOGO 4</span>
-            </div>
-            <div className="w-32 h-16 bg-card-border rounded flex items-center justify-center">
-              <span className="text-foreground/50 font-bold">LOGO 5</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -428,7 +411,7 @@ export default function Home() {
           <p className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto">
             Join thousands of users who trust FraudGuard AI to protect them from fraud and cyber threats.
           </p>
-          <button className="cyber-button text-lg py-3 px-8">Get Started Now</button>
+          <Link href="/chat" className="cyber-button text-lg py-3 px-8">Get Started Now</Link>
         </div>
       </section>
 
