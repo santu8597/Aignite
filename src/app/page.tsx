@@ -52,7 +52,7 @@ export default function Home() {
               <div className="cyber-grid rounded-lg p-4 relative overflow-hidden">
                 <div className="scan-line"></div>
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="cyber-card flex flex-col items-center justify-center p-4">
+                  <Link href={'/phishing'} className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
                       src="/ai-agent.svg"
                       alt="AI Agent"
@@ -61,8 +61,8 @@ export default function Home() {
                       className="mb-2"
                     />
                     <p className="text-center text-sm">AI Agent</p>
-                  </div>
-                  <div className="cyber-card flex flex-col items-center justify-center p-4">
+                  </Link>
+                  <Link href={'/mail'} className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
                       src="/email-scan.svg"
                       alt="Email Scanning"
@@ -71,8 +71,8 @@ export default function Home() {
                       className="mb-2"
                     />
                     <p className="text-center text-sm">Email Scan</p>
-                  </div>
-                  <div className="cyber-card flex flex-col items-center justify-center p-4">
+                  </Link>
+                  <Link href={'/phishing'} className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
                       src="/url-scan.svg"
                       alt="URL Scanning"
@@ -81,7 +81,7 @@ export default function Home() {
                       className="mb-2"
                     />
                     <p className="text-center text-sm">URL Scan</p>
-                  </div>
+                  </Link>
                   <div className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
                       src="/website-scan.svg"

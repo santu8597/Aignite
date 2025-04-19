@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react"
 import { mastraClient } from "@/lib/mastra"
 import { Send,Bot } from "lucide-react"
 import { cn } from "@/lib/utils"
-import ReactMarkdown from "react-markdown"
+
 type Message = {
   id: string
   role: "user" | "assistant"
@@ -21,7 +21,7 @@ export default function ChatApp() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    const savedMessages = localStorage.getItem("chatHistory")
+    const savedMessages = localStorage.getItem("chatHistory-mail")
     if (savedMessages) {
       try {
         setMessages(JSON.parse(savedMessages))
@@ -65,7 +65,7 @@ export default function ChatApp() {
     setIsLoading(true)
 
     try {
-      const agent = mastraClient.getAgent("phishingDetectorAgent")
+      const agent = mastraClient.getAgent("fraudMailDetectorAgent")
 
       // Convert our messages to the format expected by the agent
       const conversationHistory = updatedMessages.map((msg) => ({
@@ -88,7 +88,7 @@ export default function ChatApp() {
       setMessages(newMessages)
 
       // Save to localStorage
-      localStorage.setItem("chatHistory", JSON.stringify(newMessages))
+      localStorage.setItem("chatHistory-mail", JSON.stringify(newMessages))
     } catch (error) {
       console.error("Error:", error)
 
@@ -101,7 +101,7 @@ export default function ChatApp() {
 
       const newMessages = [...updatedMessages, errorMessage]
       setMessages(newMessages)
-      localStorage.setItem("chatHistory", JSON.stringify(newMessages))
+      localStorage.setItem("chatHistory-mail", JSON.stringify(newMessages))
     } finally {
       setIsLoading(false)
     }
@@ -169,7 +169,7 @@ export default function ChatApp() {
                 message.role === "user" ? "bg-transparent text-white" : "bg-gray-900 text-white",
               )}
             >
-              <p className="whitespace-pre-wrap"><ReactMarkdown>{message.content}</ReactMarkdown></p>
+              <p className="whitespace-pre-wrap">{message.content}</p>
             </div>
             {message.role === "user" && (
               <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center ml-2">
