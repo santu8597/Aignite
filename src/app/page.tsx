@@ -4,8 +4,8 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header/Navigation */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-card-border">
+      
+       <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-card-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Image
@@ -20,11 +20,10 @@ export default function Home() {
             <a href="#features" className="text-foreground/80 hover:text-primary transition-colors">Features</a>
             <a href="#how-it-works" className="text-foreground/80 hover:text-primary transition-colors">How It Works</a>
             <a href="#protection" className="text-foreground/80 hover:text-primary transition-colors">Protection</a>
-            <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors">Testimonials</a>
+            <a href="/Fraud" className="text-foreground/80 hover:text-primary transition-colors">Logs</a>
           </nav>
           <div className="flex items-center gap-4">
-            {/* <button className="cyber-button">Login</button>
-            <button className="cyber-button bg-gradient-to-r from-secondary-dark to-secondary">Sign Up</button> */}
+           
           </div>
         </div>
       </header>
@@ -434,7 +433,7 @@ export default function Home() {
             <div>
               <h3 className="font-bold mb-4">Product</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-foreground/70 hover:text-primary transition-colors">Features</a></li>
+                <li><a href="#features" className="text-foreground/70 hover:text-primary transition-colors">Features</a></li>
                 <li><a href="#" className="text-foreground/70 hover:text-primary transition-colors">Pricing</a></li>
                 <li><a href="#" className="text-foreground/70 hover:text-primary transition-colors">Integrations</a></li>
                 <li><a href="#" className="text-foreground/70 hover:text-primary transition-colors">Updates</a></li>
