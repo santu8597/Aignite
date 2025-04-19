@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="40" y="80" width="120" height="40" rx="5" fill="#0A0A0A" stroke="#00F5FF" stroke-width="2"/>
+  <path d="M50 100 L150 100" stroke="#00F5FF" stroke-width="1" stroke-dasharray="4 4"/>
+  <path d="M60 90 L140 90" stroke="#00F5FF" stroke-width="1" stroke-dasharray="4 4"/>
+  <path d="M60 110 L140 110" stroke="#00F5FF" stroke-width="1" stroke-dasharray="4 4"/>
+  <circle cx="70" cy="100" r="3" fill="#00F5FF"/>
+  <circle cx="90" cy="100" r="3" fill="#00F5FF"/>
+  <circle cx="110" cy="100" r="3" fill="#00F5FF"/>
+  <circle cx="130" cy="100" r="3" fill="#00F5FF"/>
+  <path d="M40 40 L160 40 L160 160 L40 160 Z" stroke="#00F5FF" stroke-width="1" stroke-dasharray="4 4"/>
+  <path d="M30 30 L170 30 L170 170 L30 170 Z" stroke="#00F5FF" stroke-width="1" stroke-dasharray="4 4"/>
+  <path d="M20 20 L180 20 L180 180 L20 180 Z" stroke="#00F5FF" stroke-width="1" stroke-dasharray="4 4"/>
+  <circle cx="100" cy="100" r="5" fill="#00F5FF"/>
+  <path d="M95 100 L105 100" stroke="#0A0A0A" stroke-width="2"/>
+  <path d="M100 95 L100 105" stroke="#0A0A0A" stroke-width="2"/>
+</svg> 
