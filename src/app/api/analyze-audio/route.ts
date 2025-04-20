@@ -1,7 +1,7 @@
 // app/api/analyze-audio/route.ts
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
-
+import { systemPrompt } from "./prompt";
 const genAI = new GoogleGenerativeAI("AIzaSyAVQpop5MJZpJg2x3DhEfWs4nCFmOQ-Op0");
 
 export async function POST(req: NextRequest) {
@@ -19,10 +19,16 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
     const base64Audio = buffer.toString("base64");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-04-17" });
 
     const result = await model.generateContent({
       contents: [
+        {
+            role: "user",
+            parts: [
+              { text: systemPrompt },
+            ],
+          },
         {
           role: "user",
           parts: [

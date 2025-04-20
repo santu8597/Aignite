@@ -52,7 +52,7 @@ export default function Home() {
               <div className="cyber-grid rounded-lg p-4 relative overflow-hidden">
                 <div className="scan-line"></div>
                 <div className="grid grid-cols-3 gap-4">
-                  <Link href={'/phishing'} className="cyber-card flex flex-col items-center justify-center p-4">
+                  <Link href={'/audio-detect'} className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
                       src="/ai-agent.svg"
                       alt="AI Agent"
@@ -60,7 +60,7 @@ export default function Home() {
                       height={80}
                       className="mb-2"
                     />
-                    <p className="text-center text-sm">AI Agent</p>
+                    <p className="text-center text-sm">Audio Agent</p>
                   </Link>
                   <Link href={'/mail'} className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
@@ -92,7 +92,7 @@ export default function Home() {
                     />
                     <p className="text-center text-sm">Website Safe Scan</p>
                   </div>
-                  <div className="cyber-card flex flex-col items-center justify-center p-4">
+                  <Link href={'/Fraud'} className="cyber-card flex flex-col items-center justify-center p-4">
                     <Image
                       src="/dashboard.svg"
                       alt="Dashboard"
@@ -100,8 +100,8 @@ export default function Home() {
                       height={80}
                       className="mb-2"
                     />
-                    <p className="text-center text-sm">Dashboard</p>
-                  </div>
+                    <p className="text-center text-sm">Scam logs</p>
+                  </Link>
                   <div className="cyber-card flex flex-col items-center justify-center p-4">
                     <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-2">
                       <span className="text-primary text-2xl">+</span>

@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import { Send, Upload, Music, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-
+import ReactMarkdown from "react-markdown"
 type Message = {
   id: string
   role: "user" | "assistant"
@@ -191,7 +191,7 @@ export default function AudioChatApp() {
                   message.role === "user" ? "bg-transparent text-white" : "bg-gray-900 text-white",
                 )}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                <ReactMarkdown>{message.content}</ReactMarkdown>
               </div>
               {message.role === "user" && (
                 <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center ml-2">
