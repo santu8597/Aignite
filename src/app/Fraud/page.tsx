@@ -164,7 +164,7 @@ export default function FraudLoggerPage() {
               </div>
             ) : (
               <div className="space-y-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
-                {fraudLogs && fraudLogs.length > 0 ? (
+                {Array.isArray(fraudLogs) && fraudLogs.length > 0 ? (
                   fraudLogs.map((log: any, index: number) => (
                     <div key={index} className="border-b border-gray-800 pb-4">
                       <div className="flex justify-between">
