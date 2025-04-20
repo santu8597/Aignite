@@ -1,0 +1,3 @@
+[submodule "fraud-logging"]
+	path = fraud-logging
+	url = https://github.com/sutirthapaul17/Fraud-logging-blockchain.git
