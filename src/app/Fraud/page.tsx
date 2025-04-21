@@ -88,11 +88,6 @@ export default function FraudLoggerPage() {
           Protect yourself from scams, phishing attempts, and fraudulent websites with our cutting-edge AI technology.
         </p>
 
-        {!isConnected && (
-          <div className="bg-black border-l-4 border-[#0ff] p-4 mb-8">
-            <p className="text-[#0ff]">Please connect your wallet to interact with the Fraud Logger.</p>
-          </div>
-        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Log Fraud Form */}
