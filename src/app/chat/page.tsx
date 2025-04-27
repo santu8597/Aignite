@@ -10,8 +10,10 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import ReactMarkdown from "react-markdown"
-
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
 import { useToast } from "@/components/ui/use-toast"
+import { useMarkdownProcessor } from "@/hooks/use-text-processor"
 // import { CodeBlockParser } from "@/components/utils/code-block-parser"
 const ToolInvocationCard = ({ toolInvocation }) => {
     const [isExpanded, setIsExpanded] = useState(false)
@@ -160,7 +162,9 @@ export default function Chat() {
           {message.parts.map((part: any, index: number) => {
             switch (part.type) {
               case "text":
-                return <ReactMarkdown key={`text-${index}`}>{part.text}</ReactMarkdown>
+                
+                return <ReactMarkdown key={`text-${index}` } remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeHighlight]}>{part.text}</ReactMarkdown>
               case "reasoning":
                 return (
                   <div key={`reasoning-${index}`} className="bg-muted/30 p-2 rounded-md my-2 text-sm">
@@ -222,7 +226,8 @@ export default function Chat() {
       )
     } else {
       // Fallback to the old format for backward compatibility
-      return <ReactMarkdown>{message.content}</ReactMarkdown>
+      const content=useMarkdownProcessor(message.content)
+      return <ReactMarkdown>{content}</ReactMarkdown>
     }
   }
 
@@ -575,7 +580,7 @@ export default function Chat() {
             ref={fileInputRef}
             onChange={handleFileChange}
             multiple
-            accept="image/*,application/pdf"
+            accept="image/*,application/pdf,audio/*,video/*"
             className="hidden"
           />
         </form>

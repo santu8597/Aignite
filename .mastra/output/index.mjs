@@ -17,6 +17,8 @@ import { exec } from 'child_process';
 import fs, { readFile } from 'fs/promises';
 import nodemailer from 'nodemailer';
 import { promisify } from 'util';
+import { MCPConfiguration } from '@mastra/mcp';
+import { AgentNetwork } from '@mastra/core/network';
 import crypto, { randomUUID } from 'crypto';
 import { pathToFileURL } from 'url';
 import { createServer } from 'http';
@@ -773,19 +775,40 @@ const emailAgent = new Agent({
 const nextjsAgent = new Agent({
   name: "Next.js Coding Agent",
   instructions: `
-    You are a senior Next.js developer AI assistant embedded in a project workspace.
+   
+    **always ask where to create the file and remember the file name and location**
 
-    Your role is to:
-    - Help write and refactor code for Next.js applications
-    - Build UI components with TailwindCSS and ShadCN when requested
-    - Set up routes, API handlers, and pages using proper Next.js conventions
-    - Suggest and install dependencies as needed
-    - Work with filesystem, project config, and dependencies in a safe and clean manner
 
-    Your tools give you access to the filesystem, components, project metadata, and more.
-    Always ask for clarification if something is ambiguous.
+You are an AI specializing in modern Nextjs development. Follow these best practices to generate high-quality, production-ready components:
+****ALways Use the latest ShadCN/UI components (@/components/ui/...)****.(very important)
+**you can also write your helper components in the same way as the above components are written.**
+ **Tech Stack & Libraries**
+->Use Lucide-React for icons.
+->Apply Framer Motion for animations and smooth interactions.
+->Style with Tailwind CSS, ensuring clean, modern aesthetics.
 
-    Use the tools to take action rather than just explaining.
+** UI & Design Principles**
+->Ensure slick, well-spaced, and modern designs with great color palettes.
+->Use soft, rounded elements with proper padding and margins.
+->Maintain high contrast and readability for accessibility.
+->Prioritize responsive layouts for various screen sizes.
+
+** Development Best Practices**
+->Always try to Use React hooks like useState, useEffect, and other relevant hooks for state and lifecycle management whenever needed.
+->Structure components to be clean, reusable, and scalable.
+->Default export all components for easy integration.
+->Optimize performance with efficient rendering and minimal re-renders.
+
+** User Experience (UX) Enhancements**
+->Include smooth animations for better interaction.
+->Implement filters, search, and sorting where applicable.
+->Ensure fast, interactive, and seamless navigation.
+->dont use repetitive div,use map function for rendering list of items.
+
+use this "use client" directive on top of the code snippet to use the client-side code.
+Your tools give you access to the filesystem, components, project metadata, and more.
+Always ask for clarification if something is ambiguous.
+Use the tools to take action rather than just explaining.
   `,
   model: google("gemini-2.0-flash"),
   memory: new Memory(),
@@ -857,6 +880,14 @@ const fraudMailDetectorAgent = new Agent({
   maxSteps: 5,
   // Or use a model like google('gemini-1.5-pro')
   tools: { emailHeaderAnalysisTool, emailContentAnalysisTool }
+});
+const audioAnalysisAgent = new Agent({
+  name: "code generte Agent",
+  instructions: `
+    you are a coding agent
+    
+  `,
+  model: google("gemini-2.0-flash")
 });
 
 const generateRecommendations = new Step({
@@ -998,6 +1029,34 @@ const recommendationWorkflow = new Workflow({
 }).step(generateRecommendations).then(reviewRecommendations).then(sendRecommendations);
 recommendationWorkflow.commit();
 
+const mcp = new MCPConfiguration({
+  servers: {
+    mcp_project: {
+      url: new URL("http://localhost:3001/sse")
+    }
+    // mastra: {
+    //     command: 'npx',
+    //     args: ['-y', '@mastra/mcp-docs-server@latest'],
+    //   },
+  }
+});
+const mcpAgent = new Agent({
+  name: "mcp Agent",
+  instructions: "You are a expert in writing mastra code",
+  model: google("gemini-2.0-flash"),
+  tools: await mcp.getTools(),
+  memory: new Memory()
+  // Tools are fixed at agent creation
+});
+
+const researchNetwork = new AgentNetwork({
+  name: "Research Network",
+  instructions: "Coordinate specialized agents to research docs thoroughly and write a good email.",
+  model: google("gemini-2.0-flash"),
+  agents: [emailAgent, docsAgent],
+  memory: new Memory()
+});
+
 const mastra = new Mastra({
   workflows: {
     weatherWorkflow,
@@ -1011,12 +1070,17 @@ const mastra = new Mastra({
     nextjsAgent,
     docsAgent,
     phishingDetectorAgent,
-    fraudMailDetectorAgent
+    fraudMailDetectorAgent,
+    audioAnalysisAgent,
+    mcpAgent
   },
   logger: createLogger({
     name: "Mastra",
     level: "info"
-  })
+  }),
+  networks: {
+    researchNetwork
+  }
 });
 
 // src/utils/filepath.ts
